@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_channel_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingTop="@dimen/toolbar_padding_top"
+        >
+    </android.support.v7.widget.Toolbar>
+
+    <com.asdzheng.suitedrecyclerview.ui.view.waveswiperefreshlayout.WaveSwipeRefreshLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/wave_channel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:above_wave_color="@color/waveLightColor"
+        app:blow_wave_color="@color/waveDeepColor"
+        android:layout_below="@+id/toolbar_channel_photo"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_channel_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            />
+
+    </com.asdzheng.suitedrecyclerview.ui.view.waveswiperefreshlayout.WaveSwipeRefreshLayout>
+
+
+</RelativeLayout>
