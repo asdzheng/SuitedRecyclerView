@@ -12,6 +12,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.asdzheng.suitedrecyclerview.utils.LogUtil;
 import com.asdzheng.suitedrecyclerview.utils.recyclerview.Size;
 
 import uk.co.senab.photoview.PhotoView;
@@ -213,6 +214,8 @@ public class ActivityTransitionExitHelper {
     }
 
     private void setTranslationY(float photoNoScaleHeight) {
+        LogUtil.w(TAG, " toView.getTop() = " + toView.getTop() + "toView Height " + toView.getHeight());
+
         //因为大图有上下黑边，下面的算法就是在扩大和缩小时考虑到上下黑边所带来的影响
         topDelta = thumbnailTop - toView.getTop();
         topDelta = topDelta - ((toView.getHeight() - photoNoScaleHeight) / 2) * heightDelta;
