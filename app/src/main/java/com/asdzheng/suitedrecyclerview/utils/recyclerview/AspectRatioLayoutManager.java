@@ -40,12 +40,15 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
 
     private int preFillGrid(Direction direction, int dy, int childDecorateTop, RecyclerView.Recycler recycler, RecyclerView.State state) {
         int firstChildPositionForRow = mSizeCalculator.getFirstChildPositionForRow(mFirstVisibleRow);
-//        LogUtil.i(TAG, "mFirstVisibleRow = " + mFirstVisibleRow  + " | firstChildPositionForRow = " + firstChildPositionForRow+ "| mFirstVisiblePosition = " + mFirstVisiblePosition) ;
         SparseArray sparseArray = new SparseArray(getChildCount());
         int paddingLeft = getPaddingLeft();
         int decoratedTop = childDecorateTop + getPaddingTop();
+
+
         if (getChildCount() != 0) {
             decoratedTop = getDecoratedTop(getChildAt(0));
+            LogUtil.w(TAG, "preFillGrid = decoratedTop : " + decoratedTop);
+
             if (mFirstVisiblePosition != firstChildPositionForRow) {
                 switch (direction) {
                     case UP:
@@ -76,29 +79,29 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
                 childPaddingLeft = paddingLeft;
                 childPaddingTop += mSizeCalculator.sizeForChildAtPosition(mFirstVisiblePosition - 1).getHeight();
             }
-            int n5 = 0;
+            //是否已经到了不可见的view
+            boolean reachUnVisablePosition = false;
             switch (direction) {
                 default:
                     if (childPaddingTop >= getContentHeight()) {
-                        n5 = 1;
+                        reachUnVisablePosition = true;
                         break;
                     }
-                    n5 = 0;
                     break;
                 case DOWN:
                     if (childPaddingTop >= dy + getContentHeight()) {
-                        n5 = 1;
+                        reachUnVisablePosition = true;
                     } else {
-                        n5 = 0;
                     }
                     break;
             }
 
-            LogUtil.i(TAG, "childPaddingTop = " + childPaddingTop + " | dy = " + dy + " | getContentHeight = " + getContentHeight() + " | n5 = " + n5);
+//            LogUtil.i(TAG, "childPaddingTop = " + childPaddingTop + " | dy = " + dy + " | getContentHeight = " + getContentHeight() + " | n5 = " + n5);
 
-            if (n5 != 0) {
+            if (reachUnVisablePosition) {
                 break;
             }
+
             View view = (View) sparseArray.get(mFirstVisiblePosition);
             if (view == null) {
                 View viewForPosition = recycler.getViewForPosition(mFirstVisiblePosition);
@@ -106,6 +109,7 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
                 addView(viewForPosition);
                 measureChildWithMargins(viewForPosition, 0, 0);
                 layoutDecorated(viewForPosition, childPaddingLeft, childPaddingTop, childPaddingLeft + sizeForChildAtPosition.getWidth(), childPaddingTop + sizeForChildAtPosition.getHeight());
+                LogUtil.w(TAG, "preFillGrid = getChildCount : " + getChildCount());
             } else {
                 LogUtil.i(TAG, "view != null mFirstVisiblePosition = " + mFirstVisiblePosition + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
                 attachView(view);
@@ -162,7 +166,11 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
             return;
         }
 
-        LogUtil.i(TAG, "onLayoutChildren = getChildCount : " + getChildCount() + " | State : " + state);
+        if (state.isPreLayout()) {
+            return;
+        }
+
+        LogUtil.w(TAG, "onLayoutChildren");
 
         mSizeCalculator.setContentWidth(getContentWidth());
         mSizeCalculator.reset();
@@ -218,6 +226,7 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
         if (getChildCount() == 0 || dy == 0) {
             return 0;
         }
+//        LogUtil.w(TAG, "scrollVerticallyBy");
         View child = getChildAt(0);
         View child2 = getChildAt(-1 + getChildCount());
         int n2 = getContentHeight();

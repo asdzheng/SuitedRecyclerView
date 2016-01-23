@@ -1,8 +1,6 @@
 package com.asdzheng.suitedrecyclerview.utils.recyclerview;
 
 
-import com.asdzheng.suitedrecyclerview.utils.LogUtil;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,13 +42,12 @@ public class AspectRatioLayoutSizeCalculator {
 
     private void computeFirstChildPositionsUpToRow(int row) {
         while (row >= mFirstChildPositionForRow.size()) {
-            LogUtil.i(TAG, "row = " + row + " | mSizeForChildAtPosition.size()" + mSizeForChildAtPosition.size());
-
-            computeChildSizesUpToPosition( mSizeForChildAtPosition.size());
+//            LogUtil.i(TAG, "row = " + row + " | mSizeForChildAtPosition.size()" + mSizeForChildAtPosition.size());
+            computeChildSizesUpToPosition();
         }
     }
 
-    public void computeChildSizesUpToPosition(int n) {
+    public void computeChildSizesUpToPosition() {
         if (mContentWidth == -1) {
             throw new RuntimeException("Invalid content width. Did you forget to set it?");
         }
@@ -58,7 +55,7 @@ public class AspectRatioLayoutSizeCalculator {
             throw new RuntimeException("Size calculator delegate is missing. Did you forget to set it?");
         }
         //已经计算过的子View的size
-        int haveComputeChildSize = mSizeForChildAtPosition.size();
+        int neverComputeChildIndex = mSizeForChildAtPosition.size();
 
         int firstPositionNotRow;
         if (mRowForChildPosition.size() > 0) {
@@ -66,26 +63,31 @@ public class AspectRatioLayoutSizeCalculator {
         } else {
             firstPositionNotRow = 0;
         }
-        //横纵比
+        //宽高比
         double aspectRatioWidth = 0.0;
-
-        int rowHeight = Integer.MAX_VALUE;
         ArrayList<Double> list = new ArrayList<Double>();
 
-        while ( rowHeight > AspectRatioLayoutSizeCalculator.mMaxRowHeight) {
-            double aspectRatioForIndex = mSizeCalculatorDelegate.aspectRatioForIndex(haveComputeChildSize);
+        int rowHeight = Integer.MAX_VALUE;
+        /**
+         * 计算childView大小的主要算法，每行的子View都不能大于设置的最大高度
+         */
+        while (rowHeight > AspectRatioLayoutSizeCalculator.mMaxRowHeight) {
+            //获取还未测量过的宽高比
+            double aspectRatioForIndex = mSizeCalculatorDelegate.aspectRatioForIndex(neverComputeChildIndex);
+            list.add(aspectRatioForIndex);
 
             aspectRatioWidth = aspectRatioWidth + aspectRatioForIndex;
 
-            list.add(aspectRatioForIndex);
-
             rowHeight = (int)Math.ceil(mContentWidth / aspectRatioWidth);
+            //当aspectRatioWidth凑成到一定数量后，rowHeight终于小于maxHeight，在从list里拿出刚才不同的宽高比来分配一行中不同view所占的大小
             if (rowHeight <= mMaxRowHeight) {
-                mFirstChildPositionForRow.add(1 + (haveComputeChildSize - list.size()));
+                mFirstChildPositionForRow.add(neverComputeChildIndex - (list.size() - 1));
+                //剩余的宽度
                 int leftContentWidth = this.mContentWidth;
                 Iterator<Double> iterator = list.iterator();
+
                 while (iterator.hasNext()) {
-                    //取剩余的宽度和原本缩小的宽度较小值
+                    //取剩余的宽度和原本缩小的宽度较小值(因为最后计算宽度的view可能有误差，因为ceil的原因会大点)
                     int min = Math.min(leftContentWidth, (int)Math.ceil(rowHeight * iterator.next()));
                     mSizeForChildAtPosition.add(new Size(min, rowHeight));
                     mRowForChildPosition.add(firstPositionNotRow);
@@ -95,7 +97,7 @@ public class AspectRatioLayoutSizeCalculator {
                 aspectRatioWidth = 0.0;
                 ++firstPositionNotRow;
             }
-            haveComputeChildSize ++;
+            neverComputeChildIndex ++;
         }
     }
 
@@ -114,7 +116,7 @@ public class AspectRatioLayoutSizeCalculator {
 
     int getRowForChildPosition(int n) {
         if (n >= mRowForChildPosition.size()) {
-            computeChildSizesUpToPosition(n);
+            computeChildSizesUpToPosition();
         }
         return mRowForChildPosition.get(n);
     }
@@ -141,7 +143,7 @@ public class AspectRatioLayoutSizeCalculator {
 
     Size sizeForChildAtPosition(int n) {
         if (n >= mSizeForChildAtPosition.size()) {
-            computeChildSizesUpToPosition(n);
+            computeChildSizesUpToPosition();
         }
         return mSizeForChildAtPosition.get(n);
     }
