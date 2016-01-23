@@ -25,15 +25,6 @@
         android:screenOrientation="portrait"
         android:theme="@style/Transparent" />
 
-    <!--<activity-->
-    <!--android:name=".ui.activity.ChannelPhotoActivity"-->
-    <!--android:screenOrientation="portrait"-->
-    <!--/>-->
-
-    <meta-data
-        android:name="com.asdzheng.sweetshow.imageloaders.GlideImageConfiguretion"
-        android:value="GlideModule" />
-
     </application>
 
 
