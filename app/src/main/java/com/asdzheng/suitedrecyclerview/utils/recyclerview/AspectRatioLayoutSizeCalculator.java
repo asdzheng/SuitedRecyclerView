@@ -28,12 +28,12 @@ public class AspectRatioLayoutSizeCalculator {
     static {
         TAG = AspectRatioLayoutSizeCalculator.class.getName();
         //每个view的最大高度
-        AspectRatioLayoutSizeCalculator.mMaxRowHeight = 600;
+        AspectRatioLayoutSizeCalculator.mMaxRowHeight = DEFAULT_MAX_ROW_HEIGHT;
     }
 
 
     public AspectRatioLayoutSizeCalculator(SizeCalculatorDelegate mSizeCalculatorDelegate) {
-        mContentWidth = -1;
+        mContentWidth = INVALID_CONTENT_WIDTH;
         this.mSizeCalculatorDelegate = mSizeCalculatorDelegate;
         mSizeForChildAtPosition = new ArrayList<Size>();
         mFirstChildPositionForRow = new ArrayList<Integer>();

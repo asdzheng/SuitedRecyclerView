@@ -795,12 +795,12 @@ public class WaveSwipeRefreshLayout extends ViewGroup {
 //                    LogUtil.i(LOG_TAG, " layoutManager layoutDecodeBottom " + layoutManager.getDecoratedBottom(recyclerView.getChildAt(recyclerView.getChildCount() - 1)) + " | getMeasuredHeight "+ recyclerView.getMeasuredHeight());
                 return recyclerView.getChildCount() > 0
                         && (layoutManager.getmLastVisiblePosition() < recyclerView.getAdapter().getItemCount() - 1 ||
-                        layoutManager.getDecoratedBottom(recyclerView.getChildAt(recyclerView.getChildCount() - 1)) > recyclerView.getPaddingBottom() + recyclerView.getMeasuredHeight());
+                        layoutManager.getDecoratedBottom(recyclerView.getChildAt(recyclerView.getChildCount() - 1)) > recyclerView.getPaddingBottom() + recyclerView.getHeight());
             } else if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 return recyclerView.getChildCount() > 0
                         && (layoutManager.findLastCompletelyVisibleItemPosition() < recyclerView.getAdapter().getItemCount() - 1 ||
-                        layoutManager.getDecoratedBottom(recyclerView.getChildAt(recyclerView.getChildCount() - 1)) > recyclerView.getPaddingBottom() + recyclerView.getMeasuredHeight());
+                        layoutManager.getDecoratedBottom(recyclerView.getChildAt(recyclerView.getChildCount() - 1)) > recyclerView.getPaddingBottom() + recyclerView.getHeight());
             } else {
                 return ViewCompat.canScrollVertically(mTarget, -1);
             }
