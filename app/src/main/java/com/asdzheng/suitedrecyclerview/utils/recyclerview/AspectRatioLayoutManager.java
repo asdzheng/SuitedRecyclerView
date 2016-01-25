@@ -44,7 +44,6 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
         int paddingLeft = getPaddingLeft();
         int decoratedTop = childDecorateTop + getPaddingTop();
 
-
         if (getChildCount() != 0) {
             decoratedTop = getDecoratedTop(getChildAt(0));
             LogUtil.w(TAG, "preFillGrid = decoratedTop : " + decoratedTop);
@@ -222,9 +221,11 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
         int n2 = getContentHeight();
         if (dy > 0) {
             //向下滑动，dy大于0
-            if (1 + mFirstVisiblePosition + getChildCount() >= getItemCount()) {
+            if (mFirstVisiblePosition + getChildCount() >= getItemCount()) {
                 //最后面的所有视图已经可见
-                preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
+//                mLastVisiblePosition = getItemCount() - 1;
+
+//                preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
                 //这时n2为实际的移动的距离
                 n2 = getDecoratedBottom(lastChild) - getContentHeight();
                 LogUtil.w(TAG, "最后面的所有视图已经可见" + " | dy = " + dy + "  | n2 = " + n2);
