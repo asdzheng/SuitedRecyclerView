@@ -47,7 +47,7 @@ public class AspectRatioLayoutSizeCalculator {
         }
     }
 
-    public void computeChildSizesUpToPosition() {
+    private void computeChildSizesUpToPosition() {
         if (mContentWidth == -1) {
             throw new RuntimeException("Invalid content width. Did you forget to set it?");
         }
@@ -57,11 +57,12 @@ public class AspectRatioLayoutSizeCalculator {
         //已经计算过的子View的size
         int neverComputeChildIndex = mSizeForChildAtPosition.size();
 
-        int firstPositionNotRow;
+        int newRow;
         if (mRowForChildPosition.size() > 0) {
-            firstPositionNotRow = 1 + mRowForChildPosition.get(-1 + mRowForChildPosition.size());
+            int lastPositionForRow = -1 + mRowForChildPosition.size();
+            newRow = 1 + mRowForChildPosition.get(lastPositionForRow);
         } else {
-            firstPositionNotRow = 0;
+            newRow = 0;
         }
         //宽高比
         double aspectRatioWidth = 0.0;
@@ -90,12 +91,9 @@ public class AspectRatioLayoutSizeCalculator {
                     //取剩余的宽度和原本缩小的宽度较小值(因为最后计算宽度的view可能有误差，因为ceil的原因会大点)
                     int min = Math.min(leftContentWidth, (int)Math.ceil(rowHeight * iterator.next()));
                     mSizeForChildAtPosition.add(new Size(min, rowHeight));
-                    mRowForChildPosition.add(firstPositionNotRow);
+                    mRowForChildPosition.add(newRow);
                     leftContentWidth = leftContentWidth - min;
                 }
-                list.clear();
-                aspectRatioWidth = 0.0;
-                firstPositionNotRow++;
             }
             neverComputeChildIndex ++;
         }
@@ -114,6 +112,11 @@ public class AspectRatioLayoutSizeCalculator {
         return mFirstChildPositionForRow.get(row);
     }
 
+    /**
+     * 得到positionView的行数
+     * @param position
+     * @return
+     */
     int getRowForChildPosition(int position) {
         if (position >= mRowForChildPosition.size()) {
             computeChildSizesUpToPosition();
@@ -141,6 +144,11 @@ public class AspectRatioLayoutSizeCalculator {
         }
     }
 
+    /**
+     * 得到postionView的Size
+     * @param position
+     * @return
+     */
     Size sizeForChildAtPosition(int position) {
         if (position >= mSizeForChildAtPosition.size()) {
             computeChildSizesUpToPosition();

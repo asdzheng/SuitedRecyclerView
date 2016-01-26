@@ -44,41 +44,51 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
         int paddingLeft = getPaddingLeft();
         int decoratedTop = childDecorateTop + getPaddingTop();
 
+        LogUtil.e(TAG, "preFillGrid = getChildCount : " + getChildCount());
+
         if (getChildCount() != 0) {
             decoratedTop = getDecoratedTop(getChildAt(0));
-            LogUtil.w(TAG, "preFillGrid = decoratedTop : " + decoratedTop);
+//          LogUtil.w(TAG, "preFillGrid = decoratedTop : " + decoratedTop);
 
             if (mFirstVisiblePosition != firstChildPositionForRow) {
                 switch (direction) {
                     case UP:
-                        decoratedTop -= mSizeCalculator.sizeForChildAtPosition(-1 + mFirstVisiblePosition).getHeight();
-                        LogUtil.i(TAG, "UP = " + decoratedTop);
+                        int upNewViewPosition = mFirstVisiblePosition -1 ;
+                        int upNewViewHeight = mSizeCalculator.sizeForChildAtPosition(upNewViewPosition).getHeight();
+                        LogUtil.i(TAG, "UP = oldTop " + decoratedTop + " | upNewViewHeight = " + upNewViewHeight + " | newTop = " + (decoratedTop - upNewViewHeight ));
+                        decoratedTop = decoratedTop - upNewViewHeight;
                         break;
                     case DOWN:
-                        decoratedTop += mSizeCalculator.sizeForChildAtPosition(mFirstVisiblePosition).getHeight();
-                        LogUtil.i(TAG, "DOWN = " + decoratedTop);
+                        int firstViewHeight = mSizeCalculator.sizeForChildAtPosition(mFirstVisiblePosition).getHeight();
+                        LogUtil.i(TAG, "DOWN = oldTop " + decoratedTop + " | firstViewHeight = " + firstViewHeight + " | newTop = " + (decoratedTop + firstViewHeight ));
+                        decoratedTop = decoratedTop + firstViewHeight;
                         break;
                 }
             }
+
             for (int i = 0; i < getChildCount(); ++i) {
-                sparseArray.put(i + mFirstVisiblePosition, (Object) getChildAt(i));
+                sparseArray.put(i + mFirstVisiblePosition, getChildAt(i));
             }
             for (int j = 0; j < sparseArray.size(); ++j) {
                 detachView((View) sparseArray.valueAt(j));
             }
         }
+        //将新的firstChild赋给全局mFirstChild
         mFirstVisiblePosition = firstChildPositionForRow;
         int childPaddingLeft = paddingLeft;
         int childPaddingTop = decoratedTop;
 
-        for (int mFirstVisiblePosition = this.mFirstVisiblePosition; mFirstVisiblePosition >= 0 && mFirstVisiblePosition < state.getItemCount(); ++mFirstVisiblePosition) {
-            Size sizeForChildAtPosition = mSizeCalculator.sizeForChildAtPosition(mFirstVisiblePosition);
+        for (int i = mFirstVisiblePosition; i < state.getItemCount(); i++) {
+            Size sizeForChildAtPosition = mSizeCalculator.sizeForChildAtPosition(i);
             //是否加上下一个view就超过屏幕的宽度
             if (childPaddingLeft + sizeForChildAtPosition.getWidth() > getContentWidth()) {
                 childPaddingLeft = paddingLeft;
-                childPaddingTop += mSizeCalculator.sizeForChildAtPosition(mFirstVisiblePosition - 1).getHeight();
+                //上一个view的坐标
+                int lastPosition = i - 1;
+                //childPaddingTop一直叠加每一行view的高度
+                int lastViewHeight =  mSizeCalculator.sizeForChildAtPosition(lastPosition).getHeight();
+                childPaddingTop = childPaddingTop + lastViewHeight;
             }
-
 
             if(direction == Direction.DOWN) {
                 //是否已经到了不可见的view(不可见的view，不用测量和绘制)
@@ -92,33 +102,33 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
                 }
             }
 
-            View view = (View) sparseArray.get(mFirstVisiblePosition);
+            View view = (View) sparseArray.get(i);
             if (view == null) {
-                View viewForPosition = recycler.getViewForPosition(mFirstVisiblePosition);
-//                LogUtil.i(TAG, "view == null mFirstVisiblePosition = " + mFirstVisiblePosition + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
-                addView(viewForPosition);
-                measureChildWithMargins(viewForPosition, 0, 0);
-                layoutDecorated(viewForPosition, childPaddingLeft, childPaddingTop, childPaddingLeft + sizeForChildAtPosition.getWidth(), childPaddingTop + sizeForChildAtPosition.getHeight());
-//                LogUtil.w(TAG, "preFillGrid = getChildCount : " + getChildCount());
+                view = recycler.getViewForPosition(i);
+                LogUtil.w(TAG, "view == null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
+                addView(view);
+                measureChildWithMargins(view, 0, 0);
+                layoutDecorated(view, childPaddingLeft, childPaddingTop, childPaddingLeft + sizeForChildAtPosition.getWidth(), childPaddingTop + sizeForChildAtPosition.getHeight());
             } else {
-//                LogUtil.i(TAG, "view != null mFirstVisiblePosition = " + mFirstVisiblePosition + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
+                LogUtil.i(TAG, "view != null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
                 attachView(view);
-                sparseArray.remove(mFirstVisiblePosition);
+                sparseArray.remove(i);
             }
             childPaddingLeft += sizeForChildAtPosition.getWidth();
         }
+
         for (int k = 0; k < sparseArray.size(); k++) {
             recycler.recycleView((View) sparseArray.valueAt(k));
         }
         int childCount = getChildCount();
-        int lastViewBottom = 0;
+        int lastVisibleViewBottom = 0;
         if (childCount > 0) {
-            lastViewBottom = getChildAt(-1 + childCount).getBottom();
+            lastVisibleViewBottom = getChildAt(childCount - 1).getBottom();
         }
 
         mLastVisiblePosition = mFirstVisiblePosition + childCount - 1;
 
-        return lastViewBottom;
+        return lastVisibleViewBottom;
     }
 
     @Override
@@ -224,29 +234,29 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
 //                preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
                 //这时n2为实际的移动的距离
                 toBottomTopDistance = getDecoratedBottom(lastChild) - getContentHeight();
-                LogUtil.w(TAG, "最后面的所有视图已经可见" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
+//                LogUtil.w(TAG, "最后面的所有视图已经可见" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
 
             } else if (getDecoratedBottom(firstChild) - dy <= 0) {
                 //第一行的的View底部将移出屏幕
                 mFirstVisibleRow++;
                 toBottomTopDistance = preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
-                LogUtil.w(TAG, "第一行的的View底部将移出屏幕" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
+//                LogUtil.w(TAG, "第一行的的View底部将移出屏幕" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
 
             } else if (getDecoratedBottom(lastChild) - dy < getContentHeight()) {
                 toBottomTopDistance = preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
-                LogUtil.w(TAG, "最底部将出现一排新的view" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
+//                LogUtil.w(TAG, "最底部将出现一排新的view" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
             }
         } else if (mFirstVisibleRow == 0 && getDecoratedTop(firstChild) - dy >= 0) {
             //第一行可见，向上滑动的距离大于从现在到顶部的距离
             toBottomTopDistance = -getDecoratedTop(firstChild);
-            LogUtil.w(TAG, "第一行可见，向上滑动的距离大于从现在到顶部的距离" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
+//            LogUtil.w(TAG, "第一行可见，向上滑动的距离大于从现在到顶部的距离" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
         } else if (getDecoratedTop(firstChild) - dy >= 0) {
             //顶部将出现一排新的view
-            --mFirstVisibleRow;
+            mFirstVisibleRow--;
             toBottomTopDistance = preFillGrid(Direction.UP, Math.abs(dy), 0, recycler, state);
-            LogUtil.w(TAG, "顶部将出现一排新的view" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
+//            LogUtil.w(TAG, "顶部将出现一排新的view" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
         } else if (getDecoratedTop(lastChild) - dy > getContentHeight()) {
-            LogUtil.w(TAG, "最后一排将移出屏幕" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
+//            LogUtil.w(TAG, "最后一排将移出屏幕" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
             toBottomTopDistance = preFillGrid(Direction.UP, Math.abs(dy), 0, recycler, state);
         }
 
