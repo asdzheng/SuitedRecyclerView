@@ -35,9 +35,9 @@ public class AspectRatioLayoutSizeCalculator {
     public AspectRatioLayoutSizeCalculator(SizeCalculatorDelegate mSizeCalculatorDelegate) {
         mContentWidth = INVALID_CONTENT_WIDTH;
         this.mSizeCalculatorDelegate = mSizeCalculatorDelegate;
-        mSizeForChildAtPosition = new ArrayList<Size>();
-        mFirstChildPositionForRow = new ArrayList<Integer>();
-        mRowForChildPosition = new ArrayList<Integer>();
+        mSizeForChildAtPosition = new ArrayList<>();
+        mFirstChildPositionForRow = new ArrayList<>();
+        mRowForChildPosition = new ArrayList<>();
     }
 
     private void computeFirstChildPositionsUpToRow(int row) {
@@ -65,7 +65,7 @@ public class AspectRatioLayoutSizeCalculator {
         }
         //宽高比
         double aspectRatioWidth = 0.0;
-        ArrayList<Double> list = new ArrayList<Double>();
+        ArrayList<Double> list = new ArrayList<>();
 
         int rowHeight = Integer.MAX_VALUE;
         /**
@@ -95,7 +95,7 @@ public class AspectRatioLayoutSizeCalculator {
                 }
                 list.clear();
                 aspectRatioWidth = 0.0;
-                ++firstPositionNotRow;
+                firstPositionNotRow++;
             }
             neverComputeChildIndex ++;
         }
@@ -114,11 +114,11 @@ public class AspectRatioLayoutSizeCalculator {
         return mFirstChildPositionForRow.get(row);
     }
 
-    int getRowForChildPosition(int n) {
-        if (n >= mRowForChildPosition.size()) {
+    int getRowForChildPosition(int position) {
+        if (position >= mRowForChildPosition.size()) {
             computeChildSizesUpToPosition();
         }
-        return mRowForChildPosition.get(n);
+        return mRowForChildPosition.get(position);
     }
 
     void reset() {
@@ -141,15 +141,15 @@ public class AspectRatioLayoutSizeCalculator {
         }
     }
 
-    Size sizeForChildAtPosition(int n) {
-        if (n >= mSizeForChildAtPosition.size()) {
+    Size sizeForChildAtPosition(int position) {
+        if (position >= mSizeForChildAtPosition.size()) {
             computeChildSizesUpToPosition();
         }
-        return mSizeForChildAtPosition.get(n);
+        return mSizeForChildAtPosition.get(position);
     }
 
     public interface SizeCalculatorDelegate
     {
-        double aspectRatioForIndex(int p0);
+        double aspectRatioForIndex(int position);
     }
 }

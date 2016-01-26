@@ -10,7 +10,7 @@ import android.view.View;
 public class AspectRatioSpacingItemDecoration extends RecyclerView.ItemDecoration
 {
     public static int DEFAULT_SPACING;
-    private static final String TAG;
+    private static String TAG;
     private int mSpacing;
 
     static {
@@ -22,33 +22,35 @@ public class AspectRatioSpacingItemDecoration extends RecyclerView.ItemDecoratio
         this(AspectRatioSpacingItemDecoration.DEFAULT_SPACING);
     }
 
-    public AspectRatioSpacingItemDecoration(final int mSpacing) {
+    public AspectRatioSpacingItemDecoration(int mSpacing) {
         this.mSpacing = mSpacing;
     }
 
-    private boolean isLeftChild(final int n, final AspectRatioLayoutSizeCalculator aspectRatioLayoutSizeCalculator) {
-        return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(n)) == n;
+    private boolean isLeftChild(int position, AspectRatioLayoutSizeCalculator aspectRatioLayoutSizeCalculator) {
+        return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(position)) == position;
     }
 
-    private boolean isTopChild(final int n, final AspectRatioLayoutSizeCalculator aspectRatioLayoutSizeCalculator) {
-        return aspectRatioLayoutSizeCalculator.getRowForChildPosition(n) == 0;
+    private boolean isTopChild(int position, AspectRatioLayoutSizeCalculator aspectRatioLayoutSizeCalculator) {
+        return aspectRatioLayoutSizeCalculator.getRowForChildPosition(position) == 0;
     }
 
     @Override
-    public void getItemOffsets(final Rect rect, final View view, final RecyclerView recyclerView, final RecyclerView.State state) {
+    public void getItemOffsets(Rect rect, View view, RecyclerView recyclerView, RecyclerView.State state) {
         if (!(recyclerView.getLayoutManager() instanceof AspectRatioLayoutManager)) {
             throw new IllegalArgumentException(String.format("The %s must be used with a %s", AspectRatioSpacingItemDecoration.class.getSimpleName(), AspectRatioLayoutManager.class.getSimpleName()));
         }
-        final int childAdapterPosition = recyclerView.getChildAdapterPosition(view);
-        final AspectRatioLayoutSizeCalculator sizeCalculator = ((AspectRatioLayoutManager)recyclerView.getLayoutManager()).getSizeCalculator();
+        int childAdapterPosition = recyclerView.getChildAdapterPosition(view);
+        AspectRatioLayoutSizeCalculator sizeCalculator = ((AspectRatioLayoutManager)recyclerView.getLayoutManager()).getSizeCalculator();
         rect.top = 0;
         rect.bottom = this.mSpacing;
         rect.left = 0;
         rect.right = this.mSpacing;
-        if (this.isTopChild(childAdapterPosition, sizeCalculator)) {
+        //只有在顶部的View才需要设置top Decoration
+        if (isTopChild(childAdapterPosition, sizeCalculator)) {
             rect.top = this.mSpacing;
         }
-        if (this.isLeftChild(childAdapterPosition, sizeCalculator)) {
+        //只有在最左边的View才需要设置left Decoration
+        if (isLeftChild(childAdapterPosition, sizeCalculator)) {
             rect.left = this.mSpacing;
         }
     }
