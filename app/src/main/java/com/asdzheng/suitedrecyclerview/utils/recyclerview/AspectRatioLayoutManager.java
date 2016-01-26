@@ -22,6 +22,8 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
     private boolean mForceClearOffsets;
     private AspectRatioLayoutSizeCalculator mSizeCalculator;
 
+    int onLayoutChildTimes = 0;
+
     static {
         TAG = AspectRatioLayoutManager.class.getSimpleName();
     }
@@ -44,7 +46,7 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
         int paddingLeft = getPaddingLeft();
         int decoratedTop = childDecorateTop + getPaddingTop();
 
-        LogUtil.e(TAG, "preFillGrid = getChildCount : " + getChildCount());
+//        LogUtil.e(TAG, "preFillGrid = getChildCount : " + getChildCount());
 
         if (getChildCount() != 0) {
             decoratedTop = getDecoratedTop(getChildAt(0));
@@ -105,12 +107,12 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
             View view = (View) sparseArray.get(i);
             if (view == null) {
                 view = recycler.getViewForPosition(i);
-                LogUtil.w(TAG, "view == null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
+//                LogUtil.w(TAG, "view == null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
                 addView(view);
                 measureChildWithMargins(view, 0, 0);
                 layoutDecorated(view, childPaddingLeft, childPaddingTop, childPaddingLeft + sizeForChildAtPosition.getWidth(), childPaddingTop + sizeForChildAtPosition.getHeight());
             } else {
-                LogUtil.i(TAG, "view != null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
+//                LogUtil.i(TAG, "view != null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
                 attachView(view);
                 sparseArray.remove(i);
             }
@@ -166,7 +168,9 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
             return;
         }
 
-        LogUtil.i(TAG, "onLayoutChildren");
+        onLayoutChildTimes++;
+
+        LogUtil.e(TAG, "onLayoutChildren times = " + onLayoutChildTimes);
 
         mSizeCalculator.setContentWidth(getContentWidth());
         mSizeCalculator.reset();

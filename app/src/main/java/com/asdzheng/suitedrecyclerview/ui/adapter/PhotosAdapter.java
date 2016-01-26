@@ -44,7 +44,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     public void bind(@NonNull final List<NewChannelInfoDetailDto> mPhotos) {
         this.mPhotos.addAll(mPhotos);
-
         notifyDataSetChanged();
     }
 
