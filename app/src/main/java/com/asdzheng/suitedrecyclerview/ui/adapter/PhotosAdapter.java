@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDetailDto;
 import com.asdzheng.suitedrecyclerview.ui.activity.ChannelPhotoDetailActivity;
-import com.asdzheng.suitedrecyclerview.ui.view.ChannelImageView;
+import com.asdzheng.suitedrecyclerview.ui.view.SuitedImageView;
+import com.asdzheng.suitedrecyclerview.utils.LogUtil;
 import com.asdzheng.suitedrecyclerview.utils.StringUtil;
 import com.asdzheng.suitedrecyclerview.utils.recyclerview.AspectRatioLayoutSizeCalculator;
 import com.asdzheng.suitedrecyclerview.utils.transition.ActivityTransitionEnterHelper;
@@ -33,16 +34,16 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     }
 
     @Override
-    public double aspectRatioForIndex(final int n) {
-        if (n < getItemCount()) {
-            final NewChannelInfoDetailDto info = mPhotos.get(n);
+    public double aspectRatioForIndex(int position) {
+        if (position < getItemCount()) {
+            NewChannelInfoDetailDto info = mPhotos.get(position);
             double ratio = StringUtil.getAspectRadioFromUrl(info.photo);
             return ratio;
         }
         return 1.0;
     }
 
-    public void bind(@NonNull final List<NewChannelInfoDetailDto> mPhotos) {
+    public void bind(@NonNull List<NewChannelInfoDetailDto> mPhotos) {
         this.mPhotos.addAll(mPhotos);
         notifyDataSetChanged();
     }
@@ -54,13 +55,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        LogUtil.i("PhotoAdapter === ", "onCreateViewHolder ");
-        return new PhotoViewHolder(new ChannelImageView(parent.getContext()));
+        return new PhotoViewHolder(new SuitedImageView(parent.getContext()));
     }
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        ((ChannelImageView) holder.itemView).bind(mPhotos.get(position).photo);
+        LogUtil.i("PhotoAdapter === ", "onBindViewHolder ");
+        ((SuitedImageView) holder.itemView).bind(mPhotos.get(position).photo);
         holder.itemView.setTag(mPhotos.get(position).photo);
     }
 
@@ -70,7 +71,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     }
 
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
-        public PhotoViewHolder(final View view) {
+        public PhotoViewHolder(View view) {
             super(view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,13 +83,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     }
 
-    public ArrayMap<String, Double> getPhotoAspectRatios() {
-        return photoAspectRatios;
-    }
-
-    public void setPhotoAspectRatios(ArrayMap<String, Double> photoAspectRatios) {
-        this.photoAspectRatios = photoAspectRatios;
-    }
+//    public ArrayMap<String, Double> getPhotoAspectRatios() {
+//        return photoAspectRatios;
+//    }
+//
+//    public void setPhotoAspectRatios(ArrayMap<String, Double> photoAspectRatios) {
+//        this.photoAspectRatios = photoAspectRatios;
+//    }
 
     private void scaleUpAnimation(View view) {
         Activity context = (Activity) view.getContext();

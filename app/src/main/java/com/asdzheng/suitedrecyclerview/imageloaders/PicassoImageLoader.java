@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
-import com.asdzheng.suitedrecyclerview.ui.view.ChannelImageView;
+import com.asdzheng.suitedrecyclerview.ui.view.SuitedImageView;
 import com.asdzheng.suitedrecyclerview.utils.ConfigConstants;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.LruCache;
@@ -26,8 +26,8 @@ public class PicassoImageLoader{
     }
 
     public void load(final Context context, final String s, final ImageView imageView) {
-        if (imageView instanceof ChannelImageView) {
-            ChannelImageView channelImageView = (ChannelImageView) imageView;
+        if (imageView instanceof SuitedImageView) {
+            SuitedImageView channelImageView = (SuitedImageView) imageView;
 
 //            Picasso.with(context).load(s).tag(context).into(imageView);
 //            LogUtil.w("PicassoImageLoader", "photoView.getSize() " + channelImageView.getWidth() + " | " + channelImageView.getHeight());

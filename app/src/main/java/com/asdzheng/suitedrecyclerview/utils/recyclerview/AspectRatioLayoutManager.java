@@ -24,6 +24,8 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
 
     int onLayoutChildTimes = 0;
 
+    int oldItemCount = 0;
+
     static {
         TAG = AspectRatioLayoutManager.class.getSimpleName();
     }
@@ -55,7 +57,7 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
             if (mFirstVisiblePosition != firstChildPositionForRow) {
                 switch (direction) {
                     case UP:
-                        int upNewViewPosition = mFirstVisiblePosition -1 ;
+                        int upNewViewPosition = mFirstVisiblePosition - 1 ;
                         int upNewViewHeight = mSizeCalculator.sizeForChildAtPosition(upNewViewPosition).getHeight();
 //                        LogUtil.i(TAG, "UP = oldTop " + decoratedTop + " | upNewViewHeight = " + upNewViewHeight + " | newTop = " + (decoratedTop - upNewViewHeight ));
                         decoratedTop = decoratedTop - upNewViewHeight;
@@ -111,6 +113,7 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
                 addView(view);
                 measureChildWithMargins(view, 0, 0);
                 layoutDecorated(view, childPaddingLeft, childPaddingTop, childPaddingLeft + sizeForChildAtPosition.getWidth(), childPaddingTop + sizeForChildAtPosition.getHeight());
+//                recycler.bindViewToPosition(view, i);
             } else {
 //                LogUtil.i(TAG, "view != null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
                 attachView(view);
