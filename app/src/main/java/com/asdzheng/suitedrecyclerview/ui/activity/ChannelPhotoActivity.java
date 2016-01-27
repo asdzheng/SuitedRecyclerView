@@ -19,13 +19,13 @@ import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDetailDto;
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDto;
 import com.asdzheng.suitedrecyclerview.http.GsonRequest;
 import com.asdzheng.suitedrecyclerview.http.UrlUtil;
-import com.asdzheng.suitedrecyclerview.imageloaders.ShowImageLoader;
 import com.asdzheng.suitedrecyclerview.ui.adapter.PhotosAdapter;
 import com.asdzheng.suitedrecyclerview.ui.view.waveswiperefreshlayout.WaveSwipeRefreshLayout;
 import com.asdzheng.suitedrecyclerview.utils.MeasUtils;
 import com.asdzheng.suitedrecyclerview.utils.StringUtil;
 import com.asdzheng.suitedrecyclerview.utils.recyclerview.AspectRatioLayoutManager;
 import com.asdzheng.suitedrecyclerview.utils.recyclerview.AspectRatioSpacingItemDecoration;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,11 +129,11 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    ShowImageLoader.getSharedInstance().resumeTag(ChannelPhotoActivity.this);
+                    Picasso.with(ChannelPhotoActivity.this).resumeTag(ChannelPhotoActivity.this);
                 } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    ShowImageLoader.getSharedInstance().pauseTag(ChannelPhotoActivity.this);
+                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
                 } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    ShowImageLoader.getSharedInstance().pauseTag(ChannelPhotoActivity.this);
+                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
                 }
             }
         });

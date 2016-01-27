@@ -3,7 +3,7 @@ package com.asdzheng.suitedrecyclerview.ui.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.asdzheng.suitedrecyclerview.imageloaders.ShowImageLoader;
+import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
 
@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ShowImageLoader.getSharedInstance().cancelRequest(this);
+        Picasso.with(this).cancelTag(this);
         ButterKnife.unbind(this);
     }
 

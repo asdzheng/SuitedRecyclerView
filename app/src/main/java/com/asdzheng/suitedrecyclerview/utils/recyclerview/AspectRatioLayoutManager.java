@@ -57,12 +57,12 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
                     case UP:
                         int upNewViewPosition = mFirstVisiblePosition -1 ;
                         int upNewViewHeight = mSizeCalculator.sizeForChildAtPosition(upNewViewPosition).getHeight();
-                        LogUtil.i(TAG, "UP = oldTop " + decoratedTop + " | upNewViewHeight = " + upNewViewHeight + " | newTop = " + (decoratedTop - upNewViewHeight ));
+//                        LogUtil.i(TAG, "UP = oldTop " + decoratedTop + " | upNewViewHeight = " + upNewViewHeight + " | newTop = " + (decoratedTop - upNewViewHeight ));
                         decoratedTop = decoratedTop - upNewViewHeight;
                         break;
                     case DOWN:
                         int firstViewHeight = mSizeCalculator.sizeForChildAtPosition(mFirstVisiblePosition).getHeight();
-                        LogUtil.i(TAG, "DOWN = oldTop " + decoratedTop + " | firstViewHeight = " + firstViewHeight + " | newTop = " + (decoratedTop + firstViewHeight ));
+//                        LogUtil.i(TAG, "DOWN = oldTop " + decoratedTop + " | firstViewHeight = " + firstViewHeight + " | newTop = " + (decoratedTop + firstViewHeight ));
                         decoratedTop = decoratedTop + firstViewHeight;
                         break;
                 }

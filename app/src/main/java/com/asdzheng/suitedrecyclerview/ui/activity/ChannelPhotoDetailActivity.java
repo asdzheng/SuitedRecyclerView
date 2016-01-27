@@ -6,11 +6,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.asdzheng.suitedrecyclerview.R;
-import com.asdzheng.suitedrecyclerview.imageloaders.ImageCallback;
-import com.asdzheng.suitedrecyclerview.imageloaders.ShowImageLoader;
 import com.asdzheng.suitedrecyclerview.ui.view.MaterialProgressBar;
 import com.asdzheng.suitedrecyclerview.utils.LogUtil;
 import com.asdzheng.suitedrecyclerview.utils.transition.ActivityTransitionExitHelper;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -42,19 +42,17 @@ public class ChannelPhotoDetailActivity extends BaseActivity {
     @Override
     protected void initData(Bundle savedInstanceState) {
         String photo = getIntent().getStringExtra("photo");
-        ShowImageLoader.getSharedInstance().load(this, photo, imageView, new ImageCallback() {
+        Picasso.with(this).load(photo).tag(this).into(imageView, new Callback() {
 
                     @Override
                     public void onSuccess() {
-                        super.onSuccess();
                         progressBar.setVisibility(View.GONE);
-                        LogUtil.i("ChannelPhotoDetailActivity", "imageView.getWidth " + imageView.getDisplayRect().width() + " | imageView.getHeight()" + imageView.getDisplayRect().height()
-                        );
+                        LogUtil.i("ChannelPhotoDetailActivity", "imageView.getWidth " + imageView.getDisplayRect().width()
+                                + " | imageView.getHeight()" + imageView.getDisplayRect().height());
                     }
 
                     @Override
                     public void onError() {
-                        super.onError();
                         progressBar.setVisibility(View.GONE);
 
                     }
@@ -105,7 +103,7 @@ public class ChannelPhotoDetailActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(progressBar.getVisibility() == View.GONE) {
+        if (progressBar.getVisibility() == View.GONE) {
             animExitActivity();
         } else {
             finish();

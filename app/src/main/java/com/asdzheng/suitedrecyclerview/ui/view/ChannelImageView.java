@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.asdzheng.suitedrecyclerview.R;
-import com.asdzheng.suitedrecyclerview.imageloaders.ShowImageLoader;
-import com.asdzheng.suitedrecyclerview.utils.recyclerview.Size;
+import com.asdzheng.suitedrecyclerview.utils.LogUtil;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -17,24 +17,33 @@ public class ChannelImageView extends ImageView {
 
     private String mPhoto;
 
-    private Size size ;
+//    private Size size ;
 
     @Override
-    public void layout(int l, int t, int r, int b) {
-        super.layout(l, t, r, b);
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        LogUtil.i("imageView", "onLayout");
 
 //        //只有在重新第一次或者宽高改变时才需重新请求图片
 //        if(size == null) {
 //            size = new Size(getWidth(), getHeight());
-//            ShowImageLoader.getSharedInstance().load(getContext(), mPhoto, this);
+//            Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(getWidth(),getHeight()).into(this);
 //        } else {
 //            if(size.getWidth() != getWidth() && size.getHeight() != getHeight()) {
 //                size.setWidth(getWidth());
 //                size.setHeight(getHeight());
-//                ShowImageLoader.getSharedInstance().load(getContext(), mPhoto, this);
+//                Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(getWidth(),getHeight()).into(this);
 //            }
 //        }
+    }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        LogUtil.i("imageView", "onSizeChanged");
+//        if(w != 0 && h != 0) {
+//            Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(getWidth(),getHeight()).into(this);
+//        }
     }
 
     public ChannelImageView(final Context context) {
@@ -59,10 +68,14 @@ public class ChannelImageView extends ImageView {
     }
 
     public void bind(final String s) {
+//        LogUtil.i("imageView", "bind ===== width : " + getWidth() + " | height = " + getHeight());
+
         mPhoto = s;
-        if(getWidth() != 0 && getHeight() != 0) {
-            ShowImageLoader.getSharedInstance().load(getContext(), mPhoto, this);
-        }
+
+//        if(getWidth() != 0 && getHeight() != 0) {
+            Picasso.with(getContext()).load(s).tag(getContext()).into(this);
+//            ShowImageLoader.getSharedInstance().load(getContext(), mPhoto, this);
+//        }
     }
 
     public String toString() {

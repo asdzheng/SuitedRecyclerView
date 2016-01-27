@@ -54,6 +54,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        LogUtil.i("PhotoAdapter === ", "onCreateViewHolder ");
         return new PhotoViewHolder(new ChannelImageView(parent.getContext()));
     }
 
