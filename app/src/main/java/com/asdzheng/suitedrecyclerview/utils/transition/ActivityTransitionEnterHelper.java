@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.asdzheng.suitedrecyclerview.utils.MeasUtils;
-import com.asdzheng.suitedrecyclerview.utils.recyclerview.Size;
+import com.asdzheng.layoutmanager.Size;
+import com.asdzheng.suitedrecyclerview.utils.DisplayUtils;
 
 /**
  * Created by Bruce Too
@@ -33,11 +33,11 @@ public class ActivityTransitionEnterHelper {
 
     public ActivityTransitionEnterHelper fromView(View fromView) {
         //因为宽在大图中一直是全屏，高预估为宽放大的比例
-        Size detailSize = new Size(MeasUtils.getDisplayWidth(), (int)(fromView.getHeight() *
-                (float)MeasUtils.getDisplayWidth() / fromView.getWidth()));
+        Size detailSize = new Size(DisplayUtils.getDisplayWidth(), (int)(fromView.getHeight() *
+                (float) DisplayUtils.getDisplayWidth() / fromView.getWidth()));
 
 //        LogUtil.w("Adapter", "Size = " + detailSize + " | getHeight = " + view.getHeight() + " scale =" +
-//                Float.parseFloat(String.format("%.2f",(float)MeasUtils.getDisplayWidth(context) / view.getWidth())));
+//                Float.parseFloat(String.format("%.2f",(float)DisplayUtils.getDisplayWidth(context) / view.getWidth())));
 
         bundle = new Bundle();
         bundle.putSerializable("size", detailSize);

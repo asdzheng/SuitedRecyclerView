@@ -22,7 +22,8 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 
-import com.asdzheng.suitedrecyclerview.utils.recyclerview.AspectRatioLayoutManager;
+import com.asdzheng.layoutmanager.SuitedLayoutManager;
+
 
 /**
  * The SwipeRefreshLayout should be used whenever the user can refresh the
@@ -750,8 +751,8 @@ public class WaveSwipeRefreshLayout extends ViewGroup {
         if (mTarget instanceof RecyclerView) {
             final RecyclerView recyclerView = (RecyclerView) mTarget;
 
-            if (recyclerView.getLayoutManager() instanceof AspectRatioLayoutManager) {
-                AspectRatioLayoutManager layoutManager = (AspectRatioLayoutManager) recyclerView.getLayoutManager();
+            if (recyclerView.getLayoutManager() instanceof SuitedLayoutManager) {
+                SuitedLayoutManager layoutManager = (SuitedLayoutManager) recyclerView.getLayoutManager();
                 return recyclerView.getChildCount() > 0
                         && (layoutManager.findFirstVisibleItemPosition() > 0 || recyclerView.getChildAt(0)
                         .getTop() < recyclerView.getPaddingTop());
@@ -788,9 +789,9 @@ public class WaveSwipeRefreshLayout extends ViewGroup {
 
         if (mTarget instanceof RecyclerView) {
             final RecyclerView recyclerView = (RecyclerView) mTarget;
-            if (recyclerView.getLayoutManager() instanceof AspectRatioLayoutManager) {
+            if (recyclerView.getLayoutManager() instanceof SuitedLayoutManager) {
                 //这里还需计最后一个可见的未知是否小于最后一个位置
-                AspectRatioLayoutManager layoutManager = (AspectRatioLayoutManager) recyclerView.getLayoutManager();
+                SuitedLayoutManager layoutManager = (SuitedLayoutManager) recyclerView.getLayoutManager();
 //                    LogUtil.i(LOG_TAG, "getmLastVisiblePosition " + layoutManager.getmLastVisiblePosition() + " | getItemCount "  + recyclerView.getAdapter().getItemCount());
 //                    LogUtil.i(LOG_TAG, " layoutManager layoutDecodeBottom " + layoutManager.getDecoratedBottom(recyclerView.getChildAt(recyclerView.getChildCount() - 1)) + " | getMeasuredHeight "+ recyclerView.getMeasuredHeight());
                 return recyclerView.getChildCount() > 0

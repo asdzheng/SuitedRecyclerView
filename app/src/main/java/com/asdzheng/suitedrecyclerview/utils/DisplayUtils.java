@@ -10,7 +10,7 @@ import com.asdzheng.suitedrecyclerview.MyApplication;
 /**
  * Created by asdzheng on 2015/12/28.
  */
-public class MeasUtils {
+public class DisplayUtils {
 
     public static int dpToPx(final float n, final Context context) {
         return (int) TypedValue.applyDimension(1, n, context.getResources().getDisplayMetrics());

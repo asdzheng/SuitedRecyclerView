@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.asdzheng.suitedrecyclerview.ui.drawable.Drawables;
 import com.asdzheng.suitedrecyclerview.utils.ConfigConstants;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttpDownloader;
@@ -22,7 +21,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = this.getApplicationContext();
-        Drawables.init(getResources());
         configure();
     }
 

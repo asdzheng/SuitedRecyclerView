@@ -8,12 +8,12 @@ import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.asdzheng.layoutmanager.SizeCaculator;
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDetailDto;
 import com.asdzheng.suitedrecyclerview.ui.activity.ChannelPhotoDetailActivity;
 import com.asdzheng.suitedrecyclerview.ui.view.SuitedImageView;
 import com.asdzheng.suitedrecyclerview.utils.LogUtil;
 import com.asdzheng.suitedrecyclerview.utils.StringUtil;
-import com.asdzheng.suitedrecyclerview.utils.recyclerview.AspectRatioLayoutSizeCalculator;
 import com.asdzheng.suitedrecyclerview.utils.transition.ActivityTransitionEnterHelper;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by asdzheng on 2015/12/28.
  */
-public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder> implements AspectRatioLayoutSizeCalculator.SizeCalculatorDelegate {
+public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder> implements SizeCaculator.SizeCalculatorDelegate {
     private List<NewChannelInfoDetailDto> mPhotos;
 
     private ArrayMap<String, Double> photoAspectRatios;

@@ -14,6 +14,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.asdzheng.layoutmanager.SuitedItemDecoration;
+import com.asdzheng.layoutmanager.SuitedLayoutManager;
 import com.asdzheng.suitedrecyclerview.R;
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDetailDto;
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDto;
@@ -21,10 +23,8 @@ import com.asdzheng.suitedrecyclerview.http.GsonRequest;
 import com.asdzheng.suitedrecyclerview.http.UrlUtil;
 import com.asdzheng.suitedrecyclerview.ui.adapter.PhotosAdapter;
 import com.asdzheng.suitedrecyclerview.ui.view.waveswiperefreshlayout.WaveSwipeRefreshLayout;
-import com.asdzheng.suitedrecyclerview.utils.MeasUtils;
+import com.asdzheng.suitedrecyclerview.utils.DisplayUtils;
 import com.asdzheng.suitedrecyclerview.utils.StringUtil;
-import com.asdzheng.suitedrecyclerview.utils.recyclerview.AspectRatioLayoutManager;
-import com.asdzheng.suitedrecyclerview.utils.recyclerview.AspectRatioSpacingItemDecoration;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
     RecyclerView recyclerChannelView;
     @Bind(R.id.wave_channel)
     WaveSwipeRefreshLayout waveChannel;
-
 
     int page = 1;
     RequestQueue queue;
@@ -118,10 +117,10 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
         AnimationAdapter animationAdapter = new AlphaInAnimationAdapter(mPhotosAdapter);
         animationAdapter.setDuration(1000);
         this.recyclerChannelView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
-        final AspectRatioLayoutManager layoutManager = new AspectRatioLayoutManager(mPhotosAdapter);
+        final SuitedLayoutManager layoutManager = new SuitedLayoutManager(mPhotosAdapter);
         this.recyclerChannelView.setLayoutManager(layoutManager);
         layoutManager.setMaxRowHeight(getResources().getDisplayMetrics().heightPixels / 3);
-        this.recyclerChannelView.addItemDecoration(new AspectRatioSpacingItemDecoration(MeasUtils.dpToPx(4.0f, this)));
+        this.recyclerChannelView.addItemDecoration(new SuitedItemDecoration(DisplayUtils.dpToPx(4.0f, this)));
 
         recyclerChannelView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

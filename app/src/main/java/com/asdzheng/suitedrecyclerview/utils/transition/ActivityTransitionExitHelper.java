@@ -12,8 +12,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.asdzheng.layoutmanager.Size;
 import com.asdzheng.suitedrecyclerview.utils.LogUtil;
-import com.asdzheng.suitedrecyclerview.utils.recyclerview.Size;
 
 import uk.co.senab.photoview.PhotoView;
 
