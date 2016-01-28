@@ -168,9 +168,14 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
             return;
         }
 
+        if(state.isPreLayout() || !state.didStructureChange()) {
+            return;
+        }
+
         onLayoutChildTimes++;
 
-        LogUtil.e(TAG, "onLayoutChildren times = " + onLayoutChildTimes);
+//        LogUtil.e(TAG, "onLayoutChildren times = " + onLayoutChildTimes + " | hasPendingAdapterUpdates " + );
+        LogUtil.e(TAG, "onLayoutChildren times = " + onLayoutChildTimes + " | didStructureChange " + state.didStructureChange());
 
         mSizeCalculator.setContentWidth(getContentWidth());
         mSizeCalculator.reset();
