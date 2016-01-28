@@ -1,4 +1,4 @@
-package com.asdzheng.suitedrecyclerview.utils.recyclerview;
+package com.asdzheng.layoutmanager;
 
 import java.io.Serializable;
 

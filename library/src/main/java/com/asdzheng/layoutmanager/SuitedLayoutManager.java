@@ -1,17 +1,14 @@
-package com.asdzheng.suitedrecyclerview.utils.recyclerview;
+package com.asdzheng.layoutmanager;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 
-import com.asdzheng.suitedrecyclerview.utils.LogUtil;
-
-
 /**
  * Created by asdzheng on 2015/12/26.
  */
-public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
+public class SuitedLayoutManager extends RecyclerView.LayoutManager {
     private static final String TAG;
     //第一个可见的position
     private int mFirstVisiblePosition;
@@ -20,18 +17,18 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
 
     private int mFirstVisibleRow;
     private boolean mForceClearOffsets;
-    private AspectRatioLayoutSizeCalculator mSizeCalculator;
+    private SizeCaculator mSizeCalculator;
 
     int onLayoutChildTimes = 0;
 
     int oldItemCount = 0;
 
     static {
-        TAG = AspectRatioLayoutManager.class.getSimpleName();
+        TAG = SuitedLayoutManager.class.getSimpleName();
     }
 
-    public AspectRatioLayoutManager(AspectRatioLayoutSizeCalculator.SizeCalculatorDelegate sizeCalculatorDelegate) {
-        mSizeCalculator = new AspectRatioLayoutSizeCalculator(sizeCalculatorDelegate);
+    public SuitedLayoutManager(SizeCaculator.SizeCalculatorDelegate sizeCalculatorDelegate) {
+        mSizeCalculator = new SizeCaculator(sizeCalculatorDelegate);
     }
 
     private int getContentHeight() {
@@ -154,7 +151,7 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
         return new RecyclerView.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
     }
 
-    public AspectRatioLayoutSizeCalculator getSizeCalculator() {
+    public SizeCaculator getSizeCalculator() {
         return mSizeCalculator;
     }
 
@@ -202,7 +199,7 @@ public class AspectRatioLayoutManager extends RecyclerView.LayoutManager {
 //        LogUtil.i(TAG, "scrollToPosition n :  " + n);
 
         if (position >= getItemCount()) {
-            Log.w(AspectRatioLayoutManager.TAG, String.format("Cannot scroll to %d, item count is %d", position, getItemCount()));
+            Log.w(SuitedLayoutManager.TAG, String.format("Cannot scroll to %d, item count is %d", position, getItemCount()));
             return;
         }
         mForceClearOffsets = true;

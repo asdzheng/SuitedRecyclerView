@@ -1,4 +1,4 @@
-package com.asdzheng.suitedrecyclerview.utils.recyclerview;
+package com.asdzheng.layoutmanager;
 
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
  * 纵横比计算工具类
  * Created by asdzheng on 2015/12/26.
  */
-public class AspectRatioLayoutSizeCalculator {
+public class SizeCaculator {
 
     private static final int DEFAULT_MAX_ROW_HEIGHT = 600;
     private static final int INVALID_CONTENT_WIDTH = -1;
@@ -26,13 +26,13 @@ public class AspectRatioLayoutSizeCalculator {
     private List<Size> mSizeForChildAtPosition;
 
     static {
-        TAG = AspectRatioLayoutSizeCalculator.class.getName();
+        TAG = SizeCaculator.class.getName();
         //每个view的最大高度
-        AspectRatioLayoutSizeCalculator.mMaxRowHeight = DEFAULT_MAX_ROW_HEIGHT;
+        SizeCaculator.mMaxRowHeight = DEFAULT_MAX_ROW_HEIGHT;
     }
 
 
-    public AspectRatioLayoutSizeCalculator(SizeCalculatorDelegate mSizeCalculatorDelegate) {
+    public SizeCaculator(SizeCalculatorDelegate mSizeCalculatorDelegate) {
         mContentWidth = INVALID_CONTENT_WIDTH;
         this.mSizeCalculatorDelegate = mSizeCalculatorDelegate;
         mSizeForChildAtPosition = new ArrayList<>();
@@ -59,7 +59,7 @@ public class AspectRatioLayoutSizeCalculator {
 
         int newRow;
         if (mRowForChildPosition.size() > 0) {
-            int lastPositionForRow = -1 + mRowForChildPosition.size();
+            int lastPositionForRow = mRowForChildPosition.size() - 1;
             newRow = 1 + mRowForChildPosition.get(lastPositionForRow);
         } else {
             newRow = 0;
@@ -72,7 +72,7 @@ public class AspectRatioLayoutSizeCalculator {
         /**
          * 计算childView大小的主要算法，每行的子View都不能大于设置的最大高度
          */
-        while (rowHeight > AspectRatioLayoutSizeCalculator.mMaxRowHeight) {
+        while (rowHeight > SizeCaculator.mMaxRowHeight) {
             //获取还未测量过的宽高比
             double aspectRatioForIndex = mSizeCalculatorDelegate.aspectRatioForIndex(neverComputeChildIndex);
             list.add(aspectRatioForIndex);
