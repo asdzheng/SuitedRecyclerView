@@ -112,15 +112,15 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
     }
 
     private void setupRecyclerView() {
-        this.mPhotosAdapter = new PhotosAdapter(list, this);
+        mPhotosAdapter = new PhotosAdapter(list, this);
 
         AnimationAdapter animationAdapter = new AlphaInAnimationAdapter(mPhotosAdapter);
         animationAdapter.setDuration(1000);
-        this.recyclerChannelView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
-        final SuitedLayoutManager layoutManager = new SuitedLayoutManager(mPhotosAdapter);
-        this.recyclerChannelView.setLayoutManager(layoutManager);
+        recyclerChannelView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
+        SuitedLayoutManager layoutManager = new SuitedLayoutManager(mPhotosAdapter);
+        recyclerChannelView.setLayoutManager(layoutManager);
         layoutManager.setMaxRowHeight(getResources().getDisplayMetrics().heightPixels / 3);
-        this.recyclerChannelView.addItemDecoration(new SuitedItemDecoration(DisplayUtils.dpToPx(4.0f, this)));
+        recyclerChannelView.addItemDecoration(new SuitedItemDecoration(DisplayUtils.dpToPx(4.0f, this)));
 
         recyclerChannelView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

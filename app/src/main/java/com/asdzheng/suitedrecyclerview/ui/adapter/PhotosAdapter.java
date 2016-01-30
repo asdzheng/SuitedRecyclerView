@@ -8,6 +8,7 @@ import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.asdzheng.layoutmanager.Size;
 import com.asdzheng.layoutmanager.SizeCaculator;
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDetailDto;
 import com.asdzheng.suitedrecyclerview.ui.activity.ChannelPhotoDetailActivity;
@@ -15,6 +16,7 @@ import com.asdzheng.suitedrecyclerview.ui.view.SuitedImageView;
 import com.asdzheng.suitedrecyclerview.utils.LogUtil;
 import com.asdzheng.suitedrecyclerview.utils.StringUtil;
 import com.asdzheng.suitedrecyclerview.utils.transition.ActivityTransitionEnterHelper;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,6 +45,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         return 1.0;
     }
 
+    @Override
+    public void haveCaculateSize(int position, Size size) {
+
+    }
+
     public void bind(@NonNull List<NewChannelInfoDetailDto> mPhotos) {
         this.mPhotos.addAll(mPhotos);
         notifyDataSetChanged();
@@ -60,9 +67,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        LogUtil.i("PhotoAdapter === ", "onBindViewHolder ");
-        ((SuitedImageView) holder.itemView).bind(mPhotos.get(position).photo);
-        holder.itemView.setTag(mPhotos.get(position).photo);
+        LogUtil.i("PhotoAdapter === ", "onBindViewHolder " + position);
+//        ((SuitedImageView) holder.itemView).bind(mPhotos.get(position).photo);
+//        holder.itemView.setTag(mPhotos.get(position).photo);
+
+        Picasso.with(mContext).load(mPhotos.get(position).photo).into((SuitedImageView) holder.itemView);
     }
 
     @Override

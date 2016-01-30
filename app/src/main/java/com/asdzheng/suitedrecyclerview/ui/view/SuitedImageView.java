@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.asdzheng.suitedrecyclerview.R;
-import com.squareup.picasso.Picasso;
+import com.asdzheng.suitedrecyclerview.utils.LogUtil;
 
 
 /**
@@ -19,10 +19,10 @@ public class SuitedImageView extends ImageView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-//        LogUtil.i("imageView", "onSizeChanged");
-        if(w != 0 && h != 0) {
-            Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(getWidth(),getHeight()).into(this);
-        }
+        LogUtil.i("imageView", "onSizeChanged");
+//        if(w != 0 && h != 0) {
+//            Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(w,h).into(this);
+//        }
     }
 
     public SuitedImageView(Context context) {

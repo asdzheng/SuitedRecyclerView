@@ -89,10 +89,10 @@ public class SizeCaculator {
 
                 while (iterator.hasNext()) {
                     //取剩余的宽度和原本缩小的宽度较小值(因为最后计算宽度的view可能有误差，因为ceil的原因会大点)
-                    int min = Math.min(leftContentWidth, (int)Math.ceil(rowHeight * iterator.next()));
-                    mSizeForChildAtPosition.add(new Size(min, rowHeight));
+                    int minWidth = Math.min(leftContentWidth, (int)Math.ceil(rowHeight * iterator.next()));
+                    mSizeForChildAtPosition.add(new Size(minWidth, rowHeight));
                     mRowForChildPosition.add(newRow);
-                    leftContentWidth = leftContentWidth - min;
+                    leftContentWidth = leftContentWidth - minWidth;
                 }
             }
             neverComputeChildIndex ++;
@@ -144,6 +144,10 @@ public class SizeCaculator {
         }
     }
 
+    void haveCaculateSize(int position, Size size) {
+        mSizeCalculatorDelegate.haveCaculateSize(position, size);
+    }
+
     /**
      * 得到postionView的Size
      * @param position
@@ -159,5 +163,6 @@ public class SizeCaculator {
     public interface SizeCalculatorDelegate
     {
         double aspectRatioForIndex(int position);
+        void haveCaculateSize(int position, Size size);
     }
 }

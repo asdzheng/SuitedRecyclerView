@@ -78,6 +78,7 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
         mFirstVisiblePosition = firstChildPositionForRow;
         int childPaddingLeft = paddingLeft;
         int childPaddingTop = decoratedTop;
+        Size childSize = new Size(0, 0);
 
         for (int i = mFirstVisiblePosition; i < state.getItemCount(); i++) {
             Size sizeForChildAtPosition = mSizeCalculator.sizeForChildAtPosition(i);
@@ -105,6 +106,13 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
 
             View view = (View) sparseArray.get(i);
             if (view == null) {
+
+                 //可以两种方法来实现请求图片时能获取的到view的size 1:把ItemDecoration传进来，然后getView之前把size回调给adapter
+                 //2:用一个adapter来处理这些，然后其他adapter直接继承此adapter就可以
+
+//                childSize.setWidth(childPaddingLeft + getD);
+//                mSizeCalculator.haveCaculateSize(i, new);
+
                 view = recycler.getViewForPosition(i);
 //                LogUtil.w(TAG, "view == null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
                 addView(view);

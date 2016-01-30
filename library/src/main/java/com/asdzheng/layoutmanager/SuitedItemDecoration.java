@@ -30,16 +30,29 @@ public class SuitedItemDecoration extends RecyclerView.ItemDecoration
         return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(position)) == position;
     }
 
+//    public boolean (int position, SizeCaculator aspectRatioLayoutSizeCalculator) {
+//        return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(position)) == position;
+//    }
+//
+//    public boolean isLeftChild(int position, SizeCaculator aspectRatioLayoutSizeCalculator) {
+//        return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(position)) == position;
+//    }
+
     private boolean isTopChild(int position, SizeCaculator aspectRatioLayoutSizeCalculator) {
         return aspectRatioLayoutSizeCalculator.getRowForChildPosition(position) == 0;
     }
+
+
 
     @Override
     public void getItemOffsets(Rect rect, View view, RecyclerView recyclerView, RecyclerView.State state) {
         if (!(recyclerView.getLayoutManager() instanceof SuitedLayoutManager)) {
             throw new IllegalArgumentException(String.format("The %s must be used with a %s", SuitedItemDecoration.class.getSimpleName(), SuitedLayoutManager.class.getSimpleName()));
         }
+
         int childAdapterPosition = recyclerView.getChildAdapterPosition(view);
+        LogUtil.i(TAG, "getItemOffsets ：Position " + childAdapterPosition);
+
         SizeCaculator sizeCalculator = ((SuitedLayoutManager)recyclerView.getLayoutManager()).getSizeCalculator();
         rect.top = 0;
         rect.bottom = this.mSpacing;
