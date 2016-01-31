@@ -7,15 +7,14 @@ import android.view.View;
 /**
  * Created by asdzheng on 2015/12/28.
  */
-public class SuitedItemDecoration extends RecyclerView.ItemDecoration
-{
+public class SuitedItemDecoration extends RecyclerView.ItemDecoration {
     public static int DEFAULT_SPACING;
     private static String TAG;
-    private int mSpacing;
+    private static int mSpacing;
 
     static {
         TAG = SuitedItemDecoration.class.getSimpleName();
-        SuitedItemDecoration.DEFAULT_SPACING = 64;
+        SuitedItemDecoration.DEFAULT_SPACING = 12;
     }
 
     public SuitedItemDecoration() {
@@ -26,23 +25,13 @@ public class SuitedItemDecoration extends RecyclerView.ItemDecoration
         this.mSpacing = mSpacing;
     }
 
-    private boolean isLeftChild(int position, SizeCaculator aspectRatioLayoutSizeCalculator) {
-        return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(position)) == position;
+    private boolean isLeftChild(int position, SizeCaculator caculator) {
+        return caculator.getFirstChildPositionForRow(caculator.getRowForChildPosition(position)) == position;
     }
 
-//    public boolean (int position, SizeCaculator aspectRatioLayoutSizeCalculator) {
-//        return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(position)) == position;
-//    }
-//
-//    public boolean isLeftChild(int position, SizeCaculator aspectRatioLayoutSizeCalculator) {
-//        return aspectRatioLayoutSizeCalculator.getFirstChildPositionForRow(aspectRatioLayoutSizeCalculator.getRowForChildPosition(position)) == position;
-//    }
-
-    private boolean isTopChild(int position, SizeCaculator aspectRatioLayoutSizeCalculator) {
-        return aspectRatioLayoutSizeCalculator.getRowForChildPosition(position) == 0;
+    private boolean isTopChild(int position, SizeCaculator caculator) {
+        return caculator.getRowForChildPosition(position) == 0;
     }
-
-
 
     @Override
     public void getItemOffsets(Rect rect, View view, RecyclerView recyclerView, RecyclerView.State state) {
@@ -51,9 +40,8 @@ public class SuitedItemDecoration extends RecyclerView.ItemDecoration
         }
 
         int childAdapterPosition = recyclerView.getChildAdapterPosition(view);
-        LogUtil.i(TAG, "getItemOffsets ：Position " + childAdapterPosition);
 
-        SizeCaculator sizeCalculator = ((SuitedLayoutManager)recyclerView.getLayoutManager()).getSizeCalculator();
+        SizeCaculator sizeCalculator = ((SuitedLayoutManager) recyclerView.getLayoutManager()).getSizeCalculator();
         rect.top = 0;
         rect.bottom = this.mSpacing;
         rect.left = 0;

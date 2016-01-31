@@ -144,9 +144,9 @@ public class SizeCaculator {
         }
     }
 
-    void haveCaculateSize(int position, Size size) {
-        mSizeCalculatorDelegate.haveCaculateSize(position, size);
-    }
+//    void haveCaculateSize(int position, View itemView) {
+//        mSizeCalculatorDelegate.haveCaculateSize(position, itemView);
+//    }
 
     /**
      * 得到postionView的Size
@@ -163,6 +163,6 @@ public class SizeCaculator {
     public interface SizeCalculatorDelegate
     {
         double aspectRatioForIndex(int position);
-        void haveCaculateSize(int position, Size size);
+//        void haveCaculateSize(int position, View itemView);
     }
 }

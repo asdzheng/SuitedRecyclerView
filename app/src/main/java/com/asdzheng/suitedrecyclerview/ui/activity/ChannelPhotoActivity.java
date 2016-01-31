@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.AnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefreshLayout.OnRefreshListener {
@@ -113,9 +111,6 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
 
     private void setupRecyclerView() {
         mPhotosAdapter = new PhotosAdapter(list, this);
-
-        AnimationAdapter animationAdapter = new AlphaInAnimationAdapter(mPhotosAdapter);
-        animationAdapter.setDuration(1000);
         recyclerChannelView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
         SuitedLayoutManager layoutManager = new SuitedLayoutManager(mPhotosAdapter);
         recyclerChannelView.setLayoutManager(layoutManager);
@@ -166,13 +161,10 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-//        ChannelBean channel = (ChannelBean) getIntent().getSerializableExtra("channel");
-//        nextStr = channel.getChannelUrl();
-
         setSupportActionBar(toolbarChannelPhoto);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbarChannelPhoto.setTitle("sexy");
+        toolbarChannelPhoto.setTitle("girl");
 
         queue = Volley.newRequestQueue(this);
         list = new ArrayList<>();

@@ -21,7 +21,7 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
 
     int onLayoutChildTimes = 0;
 
-    int oldItemCount = 0;
+    private SparseArray viewTag;
 
     static {
         TAG = SuitedLayoutManager.class.getSimpleName();
@@ -44,6 +44,10 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
         SparseArray sparseArray = new SparseArray(getChildCount());
         int paddingLeft = getPaddingLeft();
         int decoratedTop = childDecorateTop + getPaddingTop();
+
+        if (viewTag == null) {
+            viewTag = new SparseArray();
+        }
 
 //        LogUtil.e(TAG, "preFillGrid = getChildCount : " + getChildCount());
 
@@ -109,16 +113,15 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
 
                  //可以两种方法来实现请求图片时能获取的到view的size 1:把ItemDecoration传进来，然后getView之前把size回调给adapter
                  //2:用一个adapter来处理这些，然后其他adapter直接继承此adapter就可以
+                //在view还没有layout时，picasso无法resize，报Exception：At least one dimension has to be positive number
 
-//                childSize.setWidth(childPaddingLeft + getD);
-//                mSizeCalculator.haveCaculateSize(i, new);
+               final View newView = recycler.getViewForPosition(i);
 
-                view = recycler.getViewForPosition(i);
-//                LogUtil.w(TAG, "view == null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
-                addView(view);
-                measureChildWithMargins(view, 0, 0);
-                layoutDecorated(view, childPaddingLeft, childPaddingTop, childPaddingLeft + sizeForChildAtPosition.getWidth(), childPaddingTop + sizeForChildAtPosition.getHeight());
-//                recycler.bindViewToPosition(view, i);
+//              LogUtil.w(TAG, "view == null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
+                addView(newView);
+                measureChildWithMargins(newView, 0, 0);
+                layoutDecorated(newView, childPaddingLeft, childPaddingTop, childPaddingLeft + sizeForChildAtPosition.getWidth(), childPaddingTop + sizeForChildAtPosition.getHeight());
+
             } else {
 //                LogUtil.i(TAG, "view != null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
                 attachView(view);
