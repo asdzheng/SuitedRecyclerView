@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.asdzheng.suitedrecyclerview.R;
-import com.squareup.picasso.Picasso;
 
 
 /**
@@ -16,14 +15,14 @@ public class SuitedImageView extends ImageView {
 
     private String mPhoto;
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-//        LogUtil.i("imageView", "onSizeChanged");
-        if(w != 0 && h != 0) {
-            Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(w,h).into(this);
-        }
-    }
+//    @Override
+//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+//        super.onSizeChanged(w, h, oldw, oldh);
+////        LogUtil.i("imageView", "onSizeChanged");
+//        if(w != 0 && h != 0) {
+//            Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(w,h).into(this);
+//        }
+//    }
 
     public SuitedImageView(Context context) {
         super(context);
@@ -45,13 +44,9 @@ public class SuitedImageView extends ImageView {
         this.setBackgroundColor(getResources().getColor(R.color.default_image_bg));
     }
 
-    public void bind(String s) {
+    public void setPhoto(String s) {
         mPhoto = s;
     }
-
-//    public String toString() {
-//        return this.mPhoto;
-//    }
 
     public String getPhoto() {
         return mPhoto;

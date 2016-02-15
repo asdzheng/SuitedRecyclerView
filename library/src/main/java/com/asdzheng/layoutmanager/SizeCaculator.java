@@ -10,11 +10,10 @@ import java.util.List;
  * Created by asdzheng on 2015/12/26.
  */
 public class SizeCaculator {
-
     private static final int DEFAULT_MAX_ROW_HEIGHT = 600;
     private static final int INVALID_CONTENT_WIDTH = -1;
     private static final String TAG;
-    private static int mMaxRowHeight;
+    private int mMaxRowHeight;
     private int mContentWidth;
     //每一行第一个可见的View的position
     private List<Integer> mFirstChildPositionForRow;
@@ -28,7 +27,6 @@ public class SizeCaculator {
     static {
         TAG = SizeCaculator.class.getName();
         //每个view的最大高度
-        SizeCaculator.mMaxRowHeight = DEFAULT_MAX_ROW_HEIGHT;
     }
 
 
@@ -38,6 +36,7 @@ public class SizeCaculator {
         mSizeForChildAtPosition = new ArrayList<>();
         mFirstChildPositionForRow = new ArrayList<>();
         mRowForChildPosition = new ArrayList<>();
+        mMaxRowHeight = DEFAULT_MAX_ROW_HEIGHT;
     }
 
     private void computeFirstChildPositionsUpToRow(int row) {
@@ -72,7 +71,7 @@ public class SizeCaculator {
         /**
          * 计算childView大小的主要算法，每行的子View都不能大于设置的最大高度
          */
-        while (rowHeight > SizeCaculator.mMaxRowHeight) {
+        while (rowHeight > mMaxRowHeight) {
             //获取还未测量过的宽高比
             double aspectRatioForIndex = mSizeCalculatorDelegate.aspectRatioForIndex(neverComputeChildIndex);
             list.add(aspectRatioForIndex);
@@ -144,10 +143,6 @@ public class SizeCaculator {
         }
     }
 
-//    void haveCaculateSize(int position, View itemView) {
-//        mSizeCalculatorDelegate.haveCaculateSize(position, itemView);
-//    }
-
     /**
      * 得到postionView的Size
      * @param position
@@ -163,6 +158,5 @@ public class SizeCaculator {
     public interface SizeCalculatorDelegate
     {
         double aspectRatioForIndex(int position);
-//        void haveCaculateSize(int position, View itemView);
     }
 }

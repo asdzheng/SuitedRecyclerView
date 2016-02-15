@@ -24,14 +24,12 @@ import com.asdzheng.suitedrecyclerview.http.UrlUtil;
 import com.asdzheng.suitedrecyclerview.ui.adapter.PhotosAdapter;
 import com.asdzheng.suitedrecyclerview.ui.view.waveswiperefreshlayout.WaveSwipeRefreshLayout;
 import com.asdzheng.suitedrecyclerview.utils.DisplayUtils;
-import com.asdzheng.suitedrecyclerview.utils.StringUtil;
-import com.squareup.picasso.Picasso;
+import com.asdzheng.layoutmanager.SuitStringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefreshLayout.OnRefreshListener {
 
@@ -102,7 +100,7 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
     private List<NewChannelInfoDetailDto> filterEmptyPhotos(List<NewChannelInfoDetailDto> results) {
         List<NewChannelInfoDetailDto> infos = new ArrayList<>();
         for (NewChannelInfoDetailDto info : results) {
-            if (StringUtil.isNotEmpty(info.photo)) {
+            if (SuitStringUtil.isNotEmpty(info.photo)) {
                 infos.add(info);
             }
         }
@@ -111,32 +109,34 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
 
     private void setupRecyclerView() {
         mPhotosAdapter = new PhotosAdapter(list, this);
-        recyclerChannelView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
+//        recyclerChannelView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
+        recyclerChannelView.setAdapter(mPhotosAdapter);
         SuitedLayoutManager layoutManager = new SuitedLayoutManager(mPhotosAdapter);
         recyclerChannelView.setLayoutManager(layoutManager);
+        //设置最大的图片显示高度，默认为600px
         layoutManager.setMaxRowHeight(getResources().getDisplayMetrics().heightPixels / 3);
         recyclerChannelView.addItemDecoration(new SuitedItemDecoration(DisplayUtils.dpToPx(4.0f, this)));
 
-        recyclerChannelView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Picasso.with(ChannelPhotoActivity.this).resumeTag(ChannelPhotoActivity.this);
-                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
-                } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
-                }
-            }
-        });
+//        recyclerChannelView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    Picasso.with(ChannelPhotoActivity.this).resumeTag(ChannelPhotoActivity.this);
+//                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+//                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
+//                } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
+//                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
+//                }
+//            }
+//        });
     }
 
     @Override
     public void onRefresh() {
         page = 1;
-        nextStr = UrlUtil.BEAUTY_CHANNEL;
+        nextStr = UrlUtil.SIGHT;
         requestData(nextStr);
     }
 
@@ -164,7 +164,7 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
         setSupportActionBar(toolbarChannelPhoto);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbarChannelPhoto.setTitle("girl");
+        toolbarChannelPhoto.setTitle("美图");
 
         queue = Volley.newRequestQueue(this);
         list = new ArrayList<>();
