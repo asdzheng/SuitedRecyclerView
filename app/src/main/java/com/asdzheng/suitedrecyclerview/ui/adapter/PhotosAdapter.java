@@ -11,7 +11,6 @@ import com.asdzheng.layoutmanager.SizeCaculator;
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDetailDto;
 import com.asdzheng.suitedrecyclerview.ui.activity.ChannelPhotoDetailActivity;
 import com.asdzheng.suitedrecyclerview.ui.view.SuitedImageView;
-import com.asdzheng.suitedrecyclerview.utils.LogUtil;
 import com.asdzheng.suitedrecyclerview.utils.StringUtil;
 import com.asdzheng.suitedrecyclerview.utils.transition.ActivityTransitionEnterHelper;
 
@@ -43,7 +42,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     }
 
     public void bind(@NonNull List<NewChannelInfoDetailDto> mPhotos) {
-        mPhotos.addAll(mPhotos);
+        this.mPhotos.addAll(mPhotos);
         notifyDataSetChanged();
     }
 
@@ -59,7 +58,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        LogUtil.i("PhotosAdapter", "ionBindViewHolder" + position);
+//        LogUtil.i("PhotosAdapter", "ionBindViewHolder" + position);
         ((SuitedImageView) holder.itemView).bind(mPhotos.get(position).photo);
         holder.itemView.setTag(mPhotos.get(position).photo);
     }

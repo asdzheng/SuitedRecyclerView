@@ -9,6 +9,7 @@ public class UrlUtil {
     //SexyChannel
     public static final String SEXY_CHANNEL = "/channel/1033563/senses";
     public static final String BEAUTY_CHANNEL = "/channel/1015326/senses";
+    public static final String SIGHT = "/channel/1089364/senses";
 
     public static String getBaseUrl(String next) {
         return base_url + next;

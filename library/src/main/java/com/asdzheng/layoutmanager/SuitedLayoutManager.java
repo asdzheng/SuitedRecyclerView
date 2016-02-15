@@ -21,8 +21,6 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
 
     int onLayoutChildTimes = 0;
 
-    private SparseArray viewTag;
-
     static {
         TAG = SuitedLayoutManager.class.getSimpleName();
     }
@@ -44,10 +42,6 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
         SparseArray sparseArray = new SparseArray(getChildCount());
         int paddingLeft = getPaddingLeft();
         int decoratedTop = childDecorateTop + getPaddingTop();
-
-        if (viewTag == null) {
-            viewTag = new SparseArray();
-        }
 
 //        LogUtil.e(TAG, "preFillGrid = getChildCount : " + getChildCount());
 
@@ -82,7 +76,6 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
         mFirstVisiblePosition = firstChildPositionForRow;
         int childPaddingLeft = paddingLeft;
         int childPaddingTop = decoratedTop;
-        Size childSize = new Size(0, 0);
 
         for (int i = mFirstVisiblePosition; i < state.getItemCount(); i++) {
             Size sizeForChildAtPosition = mSizeCalculator.sizeForChildAtPosition(i);
@@ -110,11 +103,6 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
 
             View view = (View) sparseArray.get(i);
             if (view == null) {
-
-                 //可以两种方法来实现请求图片时能获取的到view的size 1:把ItemDecoration传进来，然后getView之前把size回调给adapter
-                 //2:用一个adapter来处理这些，然后其他adapter直接继承此adapter就可以
-                //在view还没有layout时，picasso无法resize，报Exception：At least one dimension has to be positive number
-
                final View newView = recycler.getViewForPosition(i);
 
 //              LogUtil.w(TAG, "view == null i = " + i + " | sizeForChildAtPosition = " + sizeForChildAtPosition);
@@ -186,8 +174,6 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
         onLayoutChildTimes++;
 
 //        LogUtil.e(TAG, "onLayoutChildren times = " + onLayoutChildTimes + " | hasPendingAdapterUpdates " + );
-        LogUtil.e(TAG, "onLayoutChildren times = " + onLayoutChildTimes + " | didStructureChange " + state.didStructureChange());
-
         mSizeCalculator.setContentWidth(getContentWidth());
         mSizeCalculator.reset();
         int decoratedTop;
@@ -249,34 +235,23 @@ public class SuitedLayoutManager extends RecyclerView.LayoutManager {
             //向下滑动，dy大于0
             if (mFirstVisiblePosition + getChildCount() >= getItemCount()) {
                 //最后面的所有视图已经可见
-//                mLastVisiblePosition = getItemCount() - 1;
-
-//                preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
-                //这时n2为实际的移动的距离
                 toBottomTopDistance = getDecoratedBottom(lastChild) - getContentHeight();
-//                LogUtil.w(TAG, "最后面的所有视图已经可见" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
-
             } else if (getDecoratedBottom(firstChild) - dy <= 0) {
                 //第一行的的View底部将移出屏幕
                 mFirstVisibleRow++;
                 toBottomTopDistance = preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
-//                LogUtil.w(TAG, "第一行的的View底部将移出屏幕" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
 
             } else if (getDecoratedBottom(lastChild) - dy < getContentHeight()) {
                 toBottomTopDistance = preFillGrid(Direction.DOWN, Math.abs(dy), 0, recycler, state);
-//                LogUtil.w(TAG, "最底部将出现一排新的view" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
             }
         } else if (mFirstVisibleRow == 0 && getDecoratedTop(firstChild) - dy >= 0) {
             //第一行可见，向上滑动的距离大于从现在到顶部的距离
             toBottomTopDistance = -getDecoratedTop(firstChild);
-//            LogUtil.w(TAG, "第一行可见，向上滑动的距离大于从现在到顶部的距离" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
         } else if (getDecoratedTop(firstChild) - dy >= 0) {
             //顶部将出现一排新的view
             mFirstVisibleRow--;
             toBottomTopDistance = preFillGrid(Direction.UP, Math.abs(dy), 0, recycler, state);
-//            LogUtil.w(TAG, "顶部将出现一排新的view" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
         } else if (getDecoratedTop(lastChild) - dy > getContentHeight()) {
-//            LogUtil.w(TAG, "最后一排将移出屏幕" + " | dy = " + dy + "  | n2 = " + toBottomTopDistance);
             toBottomTopDistance = preFillGrid(Direction.UP, Math.abs(dy), 0, recycler, state);
         }
 

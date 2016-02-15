@@ -45,7 +45,7 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
     List<NewChannelInfoDetailDto> list;
     @Bind(R.id.toolbar_channel_photo)
     Toolbar toolbarChannelPhoto;
-    private String nextStr = UrlUtil.SEXY_CHANNEL;
+    private String nextStr = UrlUtil.SIGHT;
     private PhotosAdapter mPhotosAdapter;
 
 
