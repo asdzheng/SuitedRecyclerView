@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by Administrator on 2016-1-4.
  */
-public class ChannelPhotoDetailActivity extends BaseActivity {
+public class PhotoDetailActivity extends BaseActivity {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -47,7 +47,7 @@ public class ChannelPhotoDetailActivity extends BaseActivity {
                     @Override
                     public void onSuccess() {
                         progressBar.setVisibility(View.GONE);
-                        LogUtil.i("ChannelPhotoDetailActivity", "imageView.getWidth " + imageView.getDisplayRect().width()
+                        LogUtil.i("PhotoDetailActivity", "imageView.getWidth " + imageView.getDisplayRect().width()
                                 + " | imageView.getHeight()" + imageView.getDisplayRect().height());
                     }
 

@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.asdzheng.layoutmanager.SuitUrlUtil;
 import com.asdzheng.layoutmanager.SuitedItemDecoration;
 import com.asdzheng.layoutmanager.SuitedLayoutManager;
 import com.asdzheng.suitedrecyclerview.R;
@@ -24,17 +25,17 @@ import com.asdzheng.suitedrecyclerview.http.UrlUtil;
 import com.asdzheng.suitedrecyclerview.ui.adapter.PhotosAdapter;
 import com.asdzheng.suitedrecyclerview.ui.view.waveswiperefreshlayout.WaveSwipeRefreshLayout;
 import com.asdzheng.suitedrecyclerview.utils.DisplayUtils;
-import com.asdzheng.layoutmanager.SuitStringUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 
-public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefreshLayout.OnRefreshListener {
+public class PhotoActivity extends BaseActivity implements WaveSwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.recycler_channel_view)
-    RecyclerView recyclerChannelView;
+    RecyclerView recyclerView;
     @Bind(R.id.wave_channel)
     WaveSwipeRefreshLayout waveChannel;
 
@@ -86,7 +87,7 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
                     waveChannel.setCanLoadMore(false);
                 }
 
-                Toast.makeText(ChannelPhotoActivity.this, "网络连接错误", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhotoActivity.this, "网络连接错误", Toast.LENGTH_SHORT).show();
                 Log.w("main", error.toString());
                 waveChannel.setRefreshing(false);
                 waveChannel.setLoading(false);
@@ -100,7 +101,7 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
     private List<NewChannelInfoDetailDto> filterEmptyPhotos(List<NewChannelInfoDetailDto> results) {
         List<NewChannelInfoDetailDto> infos = new ArrayList<>();
         for (NewChannelInfoDetailDto info : results) {
-            if (SuitStringUtil.isNotEmpty(info.photo)) {
+            if (SuitUrlUtil.isNotEmpty(info.photo)) {
                 infos.add(info);
             }
         }
@@ -109,28 +110,28 @@ public class ChannelPhotoActivity extends BaseActivity implements WaveSwipeRefre
 
     private void setupRecyclerView() {
         mPhotosAdapter = new PhotosAdapter(list, this);
-//        recyclerChannelView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
-        recyclerChannelView.setAdapter(mPhotosAdapter);
+//        recyclerView.setAdapter(new ScaleInAnimationAdapter(mPhotosAdapter));
+        recyclerView.setAdapter(mPhotosAdapter);
         SuitedLayoutManager layoutManager = new SuitedLayoutManager(mPhotosAdapter);
-        recyclerChannelView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         //设置最大的图片显示高度，默认为600px
         layoutManager.setMaxRowHeight(getResources().getDisplayMetrics().heightPixels / 3);
-        recyclerChannelView.addItemDecoration(new SuitedItemDecoration(DisplayUtils.dpToPx(4.0f, this)));
+        recyclerView.addItemDecoration(new SuitedItemDecoration(DisplayUtils.dpToPx(4.0f, this)));
 
-//        recyclerChannelView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    Picasso.with(ChannelPhotoActivity.this).resumeTag(ChannelPhotoActivity.this);
-//                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
-//                } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
-//                    Picasso.with(ChannelPhotoActivity.this).pauseTag(ChannelPhotoActivity.this);
-//                }
-//            }
-//        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Picasso.with(PhotoActivity.this).resumeTag(PhotoActivity.this);
+                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    Picasso.with(PhotoActivity.this).pauseTag(PhotoActivity.this);
+                } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    Picasso.with(PhotoActivity.this).pauseTag(PhotoActivity.this);
+                }
+            }
+        });
     }
 
     @Override

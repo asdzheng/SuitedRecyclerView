@@ -6,14 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.asdzheng.layoutmanager.SizeCaculator;
+import com.asdzheng.layoutmanager.SuitUrlUtil;
 import com.asdzheng.suitedrecyclerview.bean.NewChannelInfoDetailDto;
-import com.asdzheng.suitedrecyclerview.ui.activity.ChannelPhotoDetailActivity;
-import com.asdzheng.layoutmanager.SuitStringUtil;
+import com.asdzheng.suitedrecyclerview.ui.activity.PhotoDetailActivity;
+import com.asdzheng.suitedrecyclerview.ui.view.SuitedImageView;
 import com.asdzheng.suitedrecyclerview.utils.transition.ActivityTransitionEnterHelper;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     public double aspectRatioForIndex(int position) {
         if (position < getItemCount()) {
             NewChannelInfoDetailDto info = mPhotos.get(position);
-            double ratio = SuitStringUtil.getAspectRadioFromUrl(info.photo);
+            double ratio = SuitUrlUtil.getAspectRadioFromUrl(info.photo);
             return ratio;
         }
         return 1.0;
@@ -54,14 +53,14 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PhotoViewHolder(new ImageView(parent.getContext()));
+        return new PhotoViewHolder(new SuitedImageView(parent.getContext()));
     }
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
 //        LogUtil.i("PhotosAdapter", "ionBindViewHolder" + position);
-//        ((SuitedImageView) holder.itemView).setPhoto(mPhotos.get(position).photo);
-        Picasso.with(mContext).load(mPhotos.get(position).photo).into((ImageView)holder.itemView);
+        ((SuitedImageView) holder.itemView).setPhoto(mPhotos.get(position).photo);
+//        Picasso.with(mContext).load(mPhotos.get(position).photo).into((ImageView)holder.itemView);
         holder.itemView.setTag(mPhotos.get(position).photo);
     }
 
@@ -85,7 +84,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     private void scaleUpAnimation(View view) {
         Activity context = (Activity) view.getContext();
         ActivityTransitionEnterHelper.with(context).fromView(view).
-               start(ChannelPhotoDetailActivity.class);
+               start(PhotoDetailActivity.class);
     }
 
 }

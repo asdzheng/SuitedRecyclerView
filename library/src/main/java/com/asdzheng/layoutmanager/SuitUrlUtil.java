@@ -3,7 +3,7 @@ package com.asdzheng.layoutmanager;
 /**
  * Created by asdzheng on 2015/12/28.
  */
-public class SuitStringUtil {
+public class SuitUrlUtil {
     /**
      * 字符串为null和""都返回true
      *

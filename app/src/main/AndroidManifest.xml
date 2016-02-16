@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
     <activity
-        android:name=".ui.activity.ChannelPhotoActivity"
+        android:name=".ui.activity.PhotoActivity"
         android:screenOrientation="portrait"
         >
         <intent-filter>
@@ -21,7 +21,7 @@
     </activity>
 
     <activity
-        android:name=".ui.activity.ChannelPhotoDetailActivity"
+        android:name=".ui.activity.PhotoDetailActivity"
         android:screenOrientation="portrait"
         android:theme="@style/Transparent" />
 
