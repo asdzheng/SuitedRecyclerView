@@ -58,6 +58,11 @@
                 }
             }
         });
+        
+##Demo的滑动效果
+
+![](https://github.com/asdzheng/SuitedRecyclerView/blob/master/record.gif)
+        
   
 
 
