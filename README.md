@@ -35,28 +35,28 @@
 在我个人实践的过程中呢，有两处优化的点可以让图片滑动时更为流畅。
 
 - 在ImageView确定Width和Height后，再进行网络请求，具体可参考library里的SuitIamgeView的做法
-      @Override
-      protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        if(w != 0 && h != 0) {
-            Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(w,h).into(this);
-        }
+        @Override
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+          super.onSizeChanged(w, h, oldw, oldh);
+          if(w != 0 && h != 0) {
+              Picasso.with(getContext()).load(mPhoto).tag(getContext()).resize(w,h).into(this);
+          }
 
 - 滑动过程中，中断图片请求，以使用Picasso框架请求图片为例：
 
-      recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-          @Override
-          public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-              super.onScrollStateChanged(recyclerView, newState);
-              if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                  Picasso.with(PhotoActivity.this).resumeTag(PhotoActivity.this);
-              } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                  Picasso.with(PhotoActivity.this).pauseTag(PhotoActivity.this);
-              } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                  Picasso.with(PhotoActivity.this).pauseTag(PhotoActivity.this);
-              }
-          }
-      });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Picasso.with(PhotoActivity.this).resumeTag(PhotoActivity.this);
+                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    Picasso.with(PhotoActivity.this).pauseTag(PhotoActivity.this);
+                } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    Picasso.with(PhotoActivity.this).pauseTag(PhotoActivity.this);
+                }
+            }
+        });
   
 
 
