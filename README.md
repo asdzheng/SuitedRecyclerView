@@ -14,7 +14,7 @@
         //设置Item之间的空隙
         recyclerView.addItemDecoration(new SuitedItemDecoration(DisplayUtils.dpToPx(4.0f, this)));
 
-- PhotosAdapter需要继承SizeCaculator.SizeCalculatorDelegate，实现aspectRatioForIndex(int position)方法，返回图片宽高比
+- PhotosAdapter需要实现SizeCaculator.SizeCalculatorDelegate接口里的aspectRatioForIndex(int position)方法，返回图片宽高比
         
     
         @Override
