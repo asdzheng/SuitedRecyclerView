@@ -64,6 +64,9 @@
 ![](https://github.com/asdzheng/SuitedRecyclerView/blob/master/record.gif)
 
 
+下拉刷新上拉加载更多框架修改自![WaveSwipeRefreshLayout](https://github.com/fishCoder/WaveSwipeRefreshLayout)开源库
+
+
 ##License Apache 2.0
 
         
