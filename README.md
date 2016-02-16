@@ -17,15 +17,16 @@
 - PhotosAdapter需要继承SizeCaculator.SizeCalculatorDelegate，实现aspectRatioForIndex(int position)方法，返回图片宽高比
         
     
-          @Override
-          public double aspectRatioForIndex(int position) {
-                  if (position < getItemCount()) {
-                      PhotoInfo info = mPhotos.get(position);
-                      double ratio = SuitStringUtil.getAspectRadioFromUrl(info.photo);//如果你的图片url是以_w750_h750.jpg这样的格式结尾
-                      return ratio;
-                  }
+        @Override
+        public double aspectRatioForIndex(int position) {
+          if (position < getItemCount()) {
+              PhotoInfo info = mPhotos.get(position);
+              //如果你的图片url是以_w750_h750.jpg这样的格式结尾,可以用SuitUrlUtil这个工具类获取它的宽高比
+              double ratio = SuitUrlUtil.getAspectRadioFromUrl(info.photo);
+              return ratio;
+          }
           return 1.0;
-         } 
+       } 
   
 
 
