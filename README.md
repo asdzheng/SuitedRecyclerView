@@ -34,7 +34,7 @@
 
 在我个人实践的过程中呢，有两处优化的点可以让图片滑动时更为流畅。
 
-- 在ImageView确定Width和Height后，再进行网络请求，具体可参考library里的SuitIamgeView的做法
+- 在ImageView确定Width和Height后，再进行网络请求，具体可参考library里的SuitImageView的做法
 
           @Override
           protected void onSizeChanged(int w, int h, int oldw, int oldh) {
